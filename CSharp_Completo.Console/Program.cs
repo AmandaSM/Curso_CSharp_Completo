@@ -1,6 +1,8 @@
 ﻿using CSharp_Completo.Library.Cap.EstruturaCondicional;
 using CSharp_Completo.Library.Cap.EstruturaSequencial;
+using CSharp_Completo.Library.Cap.introducaoPOO;
 using CSharp_Completo.Library.Cap.POO;
+using CSharp_Completo.Library.Vetores;
 using System;
 using System.Globalization;
 using System.Reflection.PortableExecutable;
@@ -15,15 +17,15 @@ namespace CSharp_Completo.Console
         static void Main(string[] args)
         {
             System.Console.WriteLine("ESCOLHA UMA OPÇÃO:");
-            System.Console.WriteLine("1- POO exercicio 01");
-            System.Console.WriteLine("2- POO exercicio 02");
-            System.Console.WriteLine("3- EstruturaSequencial exercicio 01 SOMA");
-            System.Console.WriteLine("4- EstruturaSequencial exercicio 02 ÁREA CIRCUNFÊRENCIA");
-            System.Console.WriteLine("5- EstruturaSequencial exercicio 03 DIFERENCIA");
-            System.Console.WriteLine("6- EstruturaSequencial exercicio 04 FuncionarioB");
-            System.Console.WriteLine("7- EstruturaSequencial exercicio 05 Conta");
-            System.Console.WriteLine("8- EstruturaSequencial exercicio 06 ÁREA");
-            System.Console.WriteLine("9-  EstruturaCondicional exercicio 01 Conjunto Numero inteiro");
+            System.Console.WriteLine(" 1- POO exercicio 01");
+            System.Console.WriteLine(" 2- POO exercicio 02");
+            System.Console.WriteLine(" 3- EstruturaSequencial exercicio 01 SOMA");
+            System.Console.WriteLine(" 4- EstruturaSequencial exercicio 02 ÁREA CIRCUNFÊRENCIA");
+            System.Console.WriteLine(" 5- EstruturaSequencial exercicio 03 DIFERENCIA");
+            System.Console.WriteLine(" 6- EstruturaSequencial exercicio 04 FuncionarioB");
+            System.Console.WriteLine(" 7- EstruturaSequencial exercicio 05 Conta");
+            System.Console.WriteLine(" 8- EstruturaSequencial exercicio 06 ÁREA");
+            System.Console.WriteLine(" 9- EstruturaCondicional exercicio 01 Conjunto Numero inteiro");
             System.Console.WriteLine("10- EstruturaCondicional exercicio 02 Conjunto Par Impar ");
             System.Console.WriteLine("11- EstruturaCondicional exercicio 03 Conjunto Multiplos");
             System.Console.WriteLine("12- EstruturaCondicional exercicio 04 Horas de Jogo");
@@ -31,7 +33,12 @@ namespace CSharp_Completo.Console
             System.Console.WriteLine("14- EstruturaCondicional exercicio 06 Intervalo");
             System.Console.WriteLine("15- EstruturaCondicional exercicio 07 Funcao Segundo Grau");
             System.Console.WriteLine("16- EstruturaCondicional exercicio 08 Salário");
-
+            System.Console.WriteLine("17- Introdução POO exercicio 01 Retângulo)");
+            System.Console.WriteLine("18- Introdução POO exercicio 02 Funcionário");
+            System.Console.WriteLine("19- Introdução POO exercicio 03 Aluno");
+            System.Console.WriteLine("20- Introdução POO exercicio 04 Conversão Moeda");
+            System.Console.WriteLine("21- POO exercicio 05 Banco");
+            System.Console.WriteLine("22- Vetor ex 01 ");
 
             opcao = int.Parse(System.Console.ReadLine());
             switch (opcao)
@@ -97,7 +104,31 @@ namespace CSharp_Completo.Console
                 case 16:
                     ExecutarFuncaoSalario();
                     break;
-                    
+
+                case 17:
+                    ExecutarRetangulo();
+                    break;
+
+                case 18:
+                    ExecutarFuncionarioC();
+                    break;
+
+                case 19:
+                    ExecutarAluno();
+                    break;
+
+                case 20:
+                    ExecutarConversorMoeda();
+                    break;
+
+                case 21:
+                    ExecutarContaBancaria();
+                    break;
+
+                case 22:
+                    ExecutarPersionato();
+                    break;
+
                 default:
                     System.Console.WriteLine("ESCOLHA UMA OPÇÃO");
                     break;
@@ -437,6 +468,7 @@ namespace CSharp_Completo.Console
         static void ExecutarFuncaoSegundoGrau()
         {
             FuncaoSegundoGrau fSG = new FuncaoSegundoGrau();
+            System.Console.WriteLine("DIGITE valor");
 
             String[] valorEntrada = System.Console.ReadLine().Split(' ');
             fSG.X = double.Parse(valorEntrada[0], CultureInfo.InvariantCulture);
@@ -460,15 +492,15 @@ namespace CSharp_Completo.Console
             else
             {
                 System.Console.WriteLine("Q2");
-
-
             }
-
         }
 
         static void ExecutarFuncaoSalario()
         {
             Salario salario = new Salario();
+
+            System.Console.WriteLine("DIGITE salário");
+
             salario.ValorSalario = double.Parse(System.Console.ReadLine(), CultureInfo.InvariantCulture);
             if (salario.ValorSalario <= 2000.00)
             {
@@ -491,7 +523,192 @@ namespace CSharp_Completo.Console
                 System.Console.WriteLine($"R$ {salario.ValorSalario.ToString("F2", CultureInfo.InvariantCulture)}");
 
             }
-            
+
         }
+
+        static void ExecutarRetangulo()
+        {
+            Retangulo retangulo = new Retangulo();
+            System.Console.WriteLine("DIGITE altura e largura, cada um em uma linha");
+            retangulo.Altura = double.Parse(System.Console.ReadLine(), CultureInfo.InvariantCulture);
+            retangulo.Largura = double.Parse(System.Console.ReadLine(), CultureInfo.InvariantCulture);
+
+            System.Console.WriteLine($" Área:{retangulo.Area().ToString("f2", CultureInfo.InvariantCulture)}");
+            System.Console.WriteLine($" Perímetro:{retangulo.Perimetro().ToString("f2", CultureInfo.InvariantCulture)}");
+            System.Console.WriteLine($" Diagonal:{retangulo.Diagonal().ToString("f2", CultureInfo.InvariantCulture)}");
+
+
+        }
+
+        static void ExecutarFuncionarioC()
+        {
+            FuncionarioC salario = new FuncionarioC();
+
+            System.Console.WriteLine("DIGITE Nome:");
+            salario.Nome = System.Console.ReadLine();
+
+            System.Console.WriteLine("DIGITE  salário bruto: ");
+            salario.SalarioBruto = double.Parse(System.Console.ReadLine(), CultureInfo.InvariantCulture);
+
+            System.Console.WriteLine("DIGITE Imposto: ");
+            salario.Imposto = double.Parse(System.Console.ReadLine(), CultureInfo.InvariantCulture);
+
+            System.Console.WriteLine();
+            System.Console.WriteLine($"Dados:{salario}");
+
+            System.Console.WriteLine();
+            System.Console.WriteLine("Quer aumentar o salário? Digite S ou N");
+            string x = System.Console.ReadLine();
+            if (x == "S" || x == "s")
+            {
+                System.Console.WriteLine("Digite porcentagem do almento:");
+                salario.Porcentagem = double.Parse(System.Console.ReadLine(), CultureInfo.InvariantCulture);
+                salario.AumentarSalario(salario.Porcentagem);
+
+                System.Console.WriteLine();
+                System.Console.WriteLine($"Dados Atualizados :{salario}");
+            }
+
+        }
+
+        static void ExecutarAluno()
+        {
+            Aluno aluno = new Aluno();
+
+            System.Console.WriteLine();
+            System.Console.WriteLine("Nome Aluno:");
+            aluno.SetNome(System.Console.ReadLine());
+
+            System.Console.WriteLine("Digite nota primeiro bimestre:");
+            aluno.Nota01 = double.Parse(System.Console.ReadLine(), CultureInfo.InvariantCulture);
+
+            System.Console.WriteLine("Digite nota segundo bimestre");
+            aluno.Nota02 = double.Parse(System.Console.ReadLine(), CultureInfo.InvariantCulture);
+
+            System.Console.WriteLine("Digite nota terceiro bimestre:");
+            aluno.Nota03 = double.Parse(System.Console.ReadLine(), CultureInfo.InvariantCulture);
+
+            System.Console.WriteLine(aluno);
+            System.Console.WriteLine(aluno.Aprovado());
+            if (aluno.Aprovado() == "REPROVADO")
+            {
+                System.Console.WriteLine($"Faltaram: {aluno.Faltaram().ToString("f2", CultureInfo.InvariantCulture)} pontos");
+            }
+
+        }
+
+        static void ExecutarConversorMoeda()
+        {
+            ConversorMoeda c1 = new ConversorMoeda();
+
+            System.Console.WriteLine();
+            System.Console.WriteLine("Qual é a Cotação dolar?");
+            double cotacao = double.Parse(System.Console.ReadLine(), CultureInfo.InvariantCulture);
+            System.Console.WriteLine("Quantos dólares você vai comprar?");
+            double qtd = double.Parse(System.Console.ReadLine(), CultureInfo.InvariantCulture);
+
+            System.Console.WriteLine($"valor a ser pago em reais= {ConversorMoeda.Pagar(cotacao, qtd).ToString("F2", CultureInfo.InvariantCulture)}"); ;
+
+        }
+
+        static void ExecutarContaBancaria()
+        {
+            System.Console.WriteLine("");
+
+            //dados Tela
+            System.Console.Write("Número Conta:");
+            int numeroConta = int.Parse(System.Console.ReadLine());
+            ContaBancaria conta = new ContaBancaria(numeroConta);
+
+            System.Console.Write("Titular:");
+            conta.Nome = System.Console.ReadLine();
+
+            System.Console.Write("Haverá depósito inicial?(s/n)");
+            char x = char.Parse(System.Console.ReadLine());
+            if (x == 'S' || x == 's')
+            {
+                System.Console.Write("Entre valor do depósito inicial:");
+                conta.Deposito(double.Parse(System.Console.ReadLine(), CultureInfo.InvariantCulture));
+            }
+
+            System.Console.WriteLine("Dados da conta:");
+            System.Console.WriteLine(conta);
+            System.Console.WriteLine("");
+
+            System.Console.WriteLine("Deseja efetuar depósito?(s/n)");
+            x = char.Parse(System.Console.ReadLine());
+            if (x == 'S' || x == 's')
+            {
+                System.Console.WriteLine("Entre valor do depósito :");
+                conta.Deposito(double.Parse(System.Console.ReadLine(), CultureInfo.InvariantCulture));
+
+                System.Console.WriteLine("Dados da conta atualizado:");
+                System.Console.WriteLine(conta);
+                System.Console.WriteLine("");
+
+            }
+
+            System.Console.WriteLine("Deseja efetuar saque?(s/n)");
+            x = char.Parse(System.Console.ReadLine());
+            if (x == 'S' || x == 's')
+            {
+                System.Console.WriteLine("Entre valor do saque :");
+                conta.Saque(double.Parse(System.Console.ReadLine(), CultureInfo.InvariantCulture));
+
+                System.Console.WriteLine("Dados da conta atualizado:");
+                System.Console.WriteLine(conta);
+                System.Console.WriteLine("");
+
+            }
+        }
+
+        static void ExecutarPersionato()
+        {
+            System.Console.WriteLine("");
+
+
+            //dados Tela
+            System.Console.Write("Quantos quartos serão alugados?");
+            int qtdQuartosAlugados = int.Parse(System.Console.ReadLine());
+            System.Console.WriteLine();
+
+            Estudantes[] alunos = new Estudantes[10];
+
+            //preencher vetor
+            for (int quarto = 1; quarto <= qtdQuartosAlugados; quarto++)
+            {
+                System.Console.WriteLine($"Aluguel #{quarto}:");
+                System.Console.Write($"Nome: ");
+                string nome = System.Console.ReadLine();
+
+                System.Console.Write($"Email: ");
+                string email = System.Console.ReadLine();
+
+                System.Console.Write($"Quarto: ");
+                int numeroQuarto = int.Parse(System.Console.ReadLine());
+                alunos[numeroQuarto] = new Estudantes(nome, email, numeroQuarto);
+                System.Console.WriteLine();
+
+            }
+
+            //quartos vazios
+            System.Console.WriteLine("Quartos Ocupados:");
+            int quartosVazios = 0;
+
+            for (int quarto = 0; quarto < alunos.Length; quarto++)
+            {
+                if (alunos[quarto] == null)
+                {
+                    quartosVazios += 1;
+                }
+                else
+                {
+                    System.Console.WriteLine(alunos[quarto]);
+                }
+            }
+            System.Console.WriteLine($"Quantidade de quartos vazios: {quartosVazios}");
+        }
+
+
     }
 }
