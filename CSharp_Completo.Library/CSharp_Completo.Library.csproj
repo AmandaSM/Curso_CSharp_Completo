@@ -4,4 +4,13 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="CSharp_Completo.Console\**" />
+    <Compile Remove="CSharp_Completo.Library\**" />
+    <EmbeddedResource Remove="CSharp_Completo.Console\**" />
+    <EmbeddedResource Remove="CSharp_Completo.Library\**" />
+    <None Remove="CSharp_Completo.Console\**" />
+    <None Remove="CSharp_Completo.Library\**" />
+  </ItemGroup>
+
 </Project>

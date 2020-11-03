@@ -1,4 +1,5 @@
-﻿using CSharp_Completo.Library.Cap.EstruturaCondicional;
+﻿using CSharp_Completo.Library.Cap.Enumeracao_Composicao.Entities.Enums;
+using CSharp_Completo.Library.Cap.EstruturaCondicional;
 using CSharp_Completo.Library.Cap.EstruturaSequencial;
 using CSharp_Completo.Library.Cap.introducaoPOO;
 using CSharp_Completo.Library.Cap.Lista;
@@ -7,6 +8,7 @@ using CSharp_Completo.Library.Vetores;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+
 
 namespace CSharp_Completo.Console
 {
@@ -40,6 +42,8 @@ namespace CSharp_Completo.Console
             System.Console.WriteLine("22- Vetor ex 01 ");
             System.Console.WriteLine("23- Lista ex 01 ");
             System.Console.WriteLine("24- Matriz ex 01 ");
+            System.Console.WriteLine("25- Enumeração e Composição ex 01 ");
+
 
             opcao = int.Parse(System.Console.ReadLine());
             switch (opcao)
@@ -138,6 +142,10 @@ namespace CSharp_Completo.Console
                     ExecutarMatriz();
                     break;
 
+                case 25:
+                    ExecutarContrato();
+                    break;
+
                 default:
                     System.Console.WriteLine("ESCOLHA UMA OPÇÃO");
                     break;
@@ -181,6 +189,7 @@ namespace CSharp_Completo.Console
 
             }
         }
+
         static void ExecuteFuncionario()
         {
             Funcionario f1 = new Funcionario();
@@ -232,6 +241,7 @@ namespace CSharp_Completo.Console
             System.Console.WriteLine($"Área Circuferência: {aC1.AreaCircuferencia.ToString("F4", CultureInfo.InvariantCulture)}");
 
         }
+
         static void ExecuteDiferencia()
         {
             Diferencia d1 = new Diferencia();
@@ -806,11 +816,11 @@ namespace CSharp_Completo.Console
                         {
                             System.Console.WriteLine($"Esquerda: {mat[coluna, linha - 1]}");
                         }
-                        if (linha != 3)
+                        if (linha != n - 1)
                         {
                             System.Console.WriteLine($"Direita : {mat[coluna, linha + 1]} ");
                         }
-                        if (coluna != m)
+                        if (coluna != m - 1)
                         {
                             System.Console.WriteLine($"Em baixo: {mat[coluna + 1, linha]}");
                         }
@@ -822,6 +832,41 @@ namespace CSharp_Completo.Console
                     }
                 }
             }
+        }
+
+        static void ExecutarContrato()
+        {
+            System.Console.WriteLine("");
+            System.Console.Write("Enter department's name:");
+            string deptName = System.Console.ReadLine();
+            System.Console.Write("Enter worker data:");
+            string name = System.Console.ReadLine();
+            
+            string valorRecebido;
+            do
+            {
+                System.Console.WriteLine("Level (Junior/MidLevel/Senior):");
+                valorRecebido = System.Console.ReadLine();
+
+
+                if (valorRecebido == "junior" || valorRecebido == "midLevel" || valorRecebido == "senior")
+                {
+                    string upper = valorRecebido.Substring(0, 1).ToUpper();
+
+                    valorRecebido = upper + valorRecebido.ToString().Substring(1);
+                }
+                else
+                {
+                    System.Console.WriteLine("Level not found. Enter valid level");
+                    System.Console.WriteLine();
+                }
+
+            } while (valorRecebido != "Junior" && valorRecebido != "MidLevel" && valorRecebido != "Senior");
+
+            
+            
+            WorkerLevel level = Enum.Parse<WorkerLevel>(valorRecebido);
+
         }
 
     }
