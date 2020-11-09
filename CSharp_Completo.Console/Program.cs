@@ -1,14 +1,26 @@
-﻿using CSharp_Completo.Library.Cap.Enumeracao_Composicao.Entities.Enums;
+﻿using CSharp_Completo.Library.Cap.Enumeracao_Composicao.Entities;
+using CSharp_Completo.Library.Cap.Arquivo.Entities;
+using CSharp_Completo.Library.Cap.Enumeracao_Composicao.Entities.Enums;
+using CSharp_Completo.Library.Cap.Enumeracao_Composicao.Order.Entities;
+using CSharp_Completo.Library.Cap.Enumeracao_Composicao.Order.Entities.Enums;
 using CSharp_Completo.Library.Cap.EstruturaCondicional;
 using CSharp_Completo.Library.Cap.EstruturaSequencial;
 using CSharp_Completo.Library.Cap.introducaoPOO;
 using CSharp_Completo.Library.Cap.Lista;
+using CSharp_Completo.Library.Cap.Metodos_Abstratos.Imposto;
+using CSharp_Completo.Library.Cap.Polimorfismo_Heranca.Mercadoria.Entities;
 using CSharp_Completo.Library.Cap.POO;
+using CSharp_Completo.Library.Cap.Tratamento_Execoes.Entitites;
 using CSharp_Completo.Library.Vetores;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-
+using System.IO;
+using CSharp_Completo.Library.Cap.Interface.Entitite;
+using System.Security.Cryptography.X509Certificates;
+using System.Collections.Concurrent;
+using CSharp_Completo.Library.Cap.Linq.Entitite;
+using System.Linq;
 
 namespace CSharp_Completo.Console
 {
@@ -34,7 +46,7 @@ namespace CSharp_Completo.Console
             System.Console.WriteLine("14- EstruturaCondicional exercicio 06 Intervalo");
             System.Console.WriteLine("15- EstruturaCondicional exercicio 07 Funcao Segundo Grau");
             System.Console.WriteLine("16- EstruturaCondicional exercicio 08 Salário");
-            System.Console.WriteLine("17- Introdução POO exercicio 01 Retângulo)");
+            System.Console.WriteLine("17- Introdução POO exercicio 01 (Retângulo)");
             System.Console.WriteLine("18- Introdução POO exercicio 02 Funcionário");
             System.Console.WriteLine("19- Introdução POO exercicio 03 Aluno");
             System.Console.WriteLine("20- Introdução POO exercicio 04 Conversão Moeda");
@@ -42,7 +54,16 @@ namespace CSharp_Completo.Console
             System.Console.WriteLine("22- Vetor ex 01 ");
             System.Console.WriteLine("23- Lista ex 01 ");
             System.Console.WriteLine("24- Matriz ex 01 ");
-            System.Console.WriteLine("25- Enumeração e Composição ex 01 ");
+            System.Console.WriteLine("25- Enumeração e Composição ex 01 (worker) ");
+            System.Console.WriteLine("26- Enumeração e Composição ex 02 (order)");
+            System.Console.WriteLine("27- Polimorfismo e Herança ex 01 ");
+            System.Console.WriteLine("OBS CLASE E MÉTODO ABSTRATO não se encontram aqui :( acesse Cap.Metodos_Abstratos(28) ");
+            System.Console.WriteLine("29- Exeception ex 01");
+            System.Console.WriteLine("30- Arquivo ex 01");
+            System.Console.WriteLine("30- Interface ex 01");
+            System.Console.WriteLine("32- HashSet ex 01");
+            System.Console.WriteLine("33 Dictionary ex 01");
+            System.Console.WriteLine("34 Lamdda LINQ ex 01");
 
 
             opcao = int.Parse(System.Console.ReadLine());
@@ -146,6 +167,35 @@ namespace CSharp_Completo.Console
                     ExecutarContrato();
                     break;
 
+                case 26:
+                    ExecutarOrder();
+                    break;
+
+                case 27:
+                    ExecuteMercadoria();
+                    break;
+
+                case 29:
+                    ExecuteContaBancaria();
+                    break;
+
+                case 30:
+                    ExecutarArquivo();
+                    break;
+
+                case 31:
+                    ExecutarContratoParcela();
+                    break;
+
+                case 32:
+                    ExecutarHashSet();
+                    break;
+                case 33:
+                    ExecutarVotos();
+                    break;
+                case 34:
+                    ExecutarArquvoFuncionario();
+                    break;
                 default:
                     System.Console.WriteLine("ESCOLHA UMA OPÇÃO");
                     break;
@@ -839,15 +889,18 @@ namespace CSharp_Completo.Console
             System.Console.WriteLine("");
             System.Console.Write("Enter department's name:");
             string deptName = System.Console.ReadLine();
-            System.Console.Write("Enter worker data:");
+            System.Console.WriteLine("Enter worker data:");
+            System.Console.Write("Name: ");
             string name = System.Console.ReadLine();
-            
-            string valorRecebido;
-            do
-            {
-                System.Console.WriteLine("Level (Junior/MidLevel/Senior):");
-                valorRecebido = System.Console.ReadLine();
 
+            //tratando erro         
+            System.Console.Write("Level (Junior/MidLevel/Senior):");
+            string valorRecebido = System.Console.ReadLine();
+
+            while (valorRecebido != "Junior" && valorRecebido != "MidLevel" && valorRecebido != "Senior")
+            {
+                System.Console.Write("Level (Junior/MidLevel/Senior):");
+                valorRecebido = System.Console.ReadLine();
 
                 if (valorRecebido == "junior" || valorRecebido == "midLevel" || valorRecebido == "senior")
                 {
@@ -858,16 +911,421 @@ namespace CSharp_Completo.Console
                 else
                 {
                     System.Console.WriteLine("Level not found. Enter valid level");
-                    System.Console.WriteLine();
                 }
+            }
 
-            } while (valorRecebido != "Junior" && valorRecebido != "MidLevel" && valorRecebido != "Senior");
-
-            
-            
             WorkerLevel level = Enum.Parse<WorkerLevel>(valorRecebido);
+            System.Console.Write("Base Salary: ");
+            double baseSalary = double.Parse(System.Console.ReadLine(), CultureInfo.InvariantCulture);
+
+            /*construtor */
+            Department department = new Department(deptName);
+            Worker worker = new Worker(name, level, baseSalary, department);
+
+            System.Console.Write("How many contracts to this worker? ");
+            int numberContracts = int.Parse(System.Console.ReadLine());
+
+            //cadastrando contratos 
+            for (int cont = 1; cont <= numberContracts; cont++)
+            {
+                System.Console.WriteLine($"ENTER #{cont} CONTRACT DATA:");
+                System.Console.Write("DATE (DD/MM/YYYY):");
+                DateTime dateContract = DateTime.Parse(System.Console.ReadLine());
+                System.Console.Write("Value per hour:");
+                double valuePerHour = double.Parse(System.Console.ReadLine(), CultureInfo.InvariantCulture);
+                System.Console.Write("Duration (hours):");
+                int hours = int.Parse(System.Console.ReadLine());
+                System.Console.WriteLine();
+
+                /*construtor HourContract*/
+                HourContract contract = new HourContract(dateContract, valuePerHour, hours);
+                worker.AddContract(contract);
+            }
+            System.Console.WriteLine();
+            System.Console.WriteLine("Enter moth and year to calculate income (MM/YYYY)");
+            string mothAndYear = System.Console.ReadLine();
+            int month = int.Parse(mothAndYear.Substring(0, 2));
+            int year = int.Parse(mothAndYear.Substring(3));
+            System.Console.WriteLine($"Name: {worker.Name}");
+            System.Console.WriteLine($"DEPARTMENT: {worker.Department.Name}");
+            System.Console.Write($"Income for {mothAndYear}: {worker.Income(year, month).ToString("F2", CultureInfo.InvariantCulture)}");
 
         }
+
+        static void ExecutarOrder()
+        {
+            System.Console.WriteLine("ENTER CLIENTE DATA:");
+            System.Console.Write("Name:");
+            string name = System.Console.ReadLine();
+            System.Console.Write("Email:");
+            string email = System.Console.ReadLine();
+            System.Console.Write("Birth date (DD/MM/YYYY):");
+            DateTime date = DateTime.Parse(System.Console.ReadLine());
+            System.Console.WriteLine();
+            System.Console.Write("----------------------------------------------");
+            System.Console.WriteLine();
+            System.Console.WriteLine("ENTER ORDER DATA:");
+            System.Console.Write("Status (Pending_Payment/Processing/Delivered/Shipped):");
+            string valorRecebido = System.Console.ReadLine();
+            OrderStatus orderStatus;
+
+            while (valorRecebido != OrderStatus.Pending_Payment.ToString() && valorRecebido != OrderStatus.Processing.ToString()
+                && valorRecebido != OrderStatus.Delivered.ToString() && valorRecebido != OrderStatus.Shipped.ToString())
+            {
+                System.Console.Write("Status (Pending_Payment/Processing/Delivered/Shipped):");
+                valorRecebido = System.Console.ReadLine();
+
+                if (valorRecebido == "processing" || valorRecebido == "shipped")
+                {
+                    string upper = valorRecebido.Substring(0, 1).ToUpper();
+                    valorRecebido = upper + valorRecebido.ToString().Substring(1);
+                }
+                else if (valorRecebido == "pending_payment")
+                {
+                    valorRecebido += valorRecebido.Replace('p', 'P');
+                }
+                else
+                {
+                    System.Console.WriteLine("Satus not found. Enter valid status");
+                }
+            }
+
+            orderStatus = Enum.Parse<OrderStatus>(valorRecebido);
+
+            /*construtor */
+            Client client = new Client(name, email, date);
+            Order order = new Order(orderStatus, client);
+            Product product = null;
+            System.Console.Write("How many itens to this order? ");
+            int numberItens = int.Parse(System.Console.ReadLine());
+
+            //cadastrando contratos 
+            for (int cont = 1; cont <= numberItens; cont++)
+            {
+                System.Console.WriteLine($"ENTER #{cont} item DATA:");
+                System.Console.Write("Product Name:");
+                name = System.Console.ReadLine();
+                System.Console.Write("Product price: ");
+                double price = double.Parse(System.Console.ReadLine(), CultureInfo.InvariantCulture);
+                System.Console.Write("Quantity:");
+                int qtd = int.Parse(System.Console.ReadLine());
+                System.Console.WriteLine();
+
+                /*construtor */
+                product = new Product(name, price);
+                OrdemItem item = new OrdemItem(qtd, product);
+                order.AddItem(item);
+            }
+            System.Console.WriteLine();
+            System.Console.WriteLine("ORDER SUMMARY");
+            System.Console.WriteLine(order);
+        }
+
+        static void ExecuteMercadoria()
+        {
+            System.Console.Write("Enter the number of Mercadorias:");
+            int numberMercadorias = int.Parse(System.Console.ReadLine());
+            List<Mercadoria> list = new List<Mercadoria>();
+
+            for (int prod = 0; prod < numberMercadorias; prod++)
+            {
+                System.Console.WriteLine($"ENTER #{prod} DATA:");
+                System.Console.Write("Common, used or imported (c/u/i)?");
+                char valida = char.Parse(System.Console.ReadLine());
+
+                System.Console.Write("Mercadoria Name:");
+                string name = System.Console.ReadLine();
+                System.Console.Write("Mercadoria price: ");
+                double price = double.Parse(System.Console.ReadLine(), CultureInfo.InvariantCulture);
+
+                /*construtor */
+
+                if (valida == 'i')
+                {
+                    System.Console.Write("Custon fee:");
+                    double custon = double.Parse(System.Console.ReadLine(), CultureInfo.InvariantCulture);
+                    System.Console.WriteLine();
+                    /*construtor */
+                    list.Add(new ImportedMercadoria(custon, name, price));
+                }
+                else if (valida == 'u')
+                {
+                    System.Console.Write("Manufacture da(DD/MM/YYYY):");
+                    DateTime date = DateTime.Parse(System.Console.ReadLine());
+                    System.Console.WriteLine();
+                    /*construtor */
+                    list.Add(new UsedMercadoria(date, name, price));
+                }
+                else
+                {
+                    list.Add(new Mercadoria(name, price));
+                }
+                System.Console.WriteLine("PRICE TAGS:");
+                foreach (Mercadoria item in list)
+                {
+                    System.Console.WriteLine(item.PriceTag());
+                }
+            }
+        }
+
+        static void ExecuteContaBancaria()
+        {
+            try
+            {
+                System.Console.WriteLine();
+
+                System.Console.WriteLine("Enter account data:");
+                System.Console.Write("Number:");
+                int id = int.Parse(System.Console.ReadLine());
+                System.Console.Write("Holder:");
+                string holder = System.Console.ReadLine();
+                System.Console.Write("Initial balance: ");
+                double initialBalance = double.Parse(System.Console.ReadLine(), CultureInfo.InvariantCulture);
+                System.Console.Write("Withdraw Limit: ");
+                double withdrawLimit = double.Parse(System.Console.ReadLine(), CultureInfo.InvariantCulture);
+
+                System.Console.WriteLine();
+                System.Console.WriteLine("----------------------------------");
+                System.Console.WriteLine();
+
+                Account1 contaBancaria = new Account1(id, holder, withdrawLimit, initialBalance);
+
+                System.Console.Write("Would like to enter balance or withdraw?(y/n): ");
+                char valida = char.Parse(System.Console.ReadLine());
+                while (valida != 'n')
+                {
+                    System.Console.Write("Would like to enter balance or withdraw?(b/w): ");
+                    valida = char.Parse(System.Console.ReadLine());
+                    if (valida == 'b' || valida == 'B')
+                    {
+                        System.Console.Write("Enter amount for balance: ");
+                        double amount = double.Parse(System.Console.ReadLine(), CultureInfo.InvariantCulture);
+                        try
+                        {
+                            contaBancaria.Deposito(amount);
+                            System.Console.WriteLine("----------------------------------");
+                            System.Console.WriteLine(contaBancaria);
+                            System.Console.WriteLine("----------------------------------");
+                        }
+                        catch (CannotUnloadAppDomainException e)
+                        {
+                            System.Console.WriteLine($"Withdraw error:{e}");
+                        }
+                    }
+                    else if (valida == 'w' || valida == 'W')
+                    {
+                        System.Console.Write("Enter amount for withdraw: ");
+                        double amount = double.Parse(System.Console.ReadLine(), CultureInfo.InvariantCulture);
+                        try
+                        {
+                            contaBancaria.WithDraw(amount);
+                            System.Console.WriteLine("----------------------------------");
+                            System.Console.WriteLine(contaBancaria);
+                            System.Console.WriteLine("----------------------------------");
+                        }
+                        catch (CannotUnloadAppDomainException e)
+                        {
+                            System.Console.WriteLine($" Balance error:{e}");
+                        }
+                    }
+                    System.Console.Write("Would like to enter balance or withdraw?(y/n): ");
+                    valida = char.Parse(System.Console.ReadLine());
+                }
+            }
+            catch (FormatException e)
+            {
+                System.Console.WriteLine($"Error in format:{e}");
+            }
+            catch (AppDomainUnloadedException e)
+            {
+                System.Console.WriteLine($"Error in Account1:{e}");
+            }
+            catch (Exception e)
+            {
+                System.Console.WriteLine($"Unexpected error:{e}");
+            }
+        }
+
+        static void ExecutarArquivo()
+        {
+            System.Console.Write("Enter path:");
+            string path = System.Console.ReadLine();
+
+            try
+            {
+                //lendo arquivo
+                string[] lines = File.ReadAllLines(path);
+                // caminho arquivo principal -> pegando pasta
+                string folderPath = Path.GetDirectoryName(path);
+                //caminho arquivo gerado
+                string folderPath02 = folderPath + @"\out";
+                string filePath02 = folderPath02 + @"\summary.csv";
+                //criando pasta \out
+                Directory.CreateDirectory(folderPath02);
+
+                using (StreamWriter streamWriter = File.AppendText(filePath02))
+                {
+                    foreach (string line in lines)
+                    {
+                        //line[0] retorna uma letra
+                        string[] fields = line.Split(',');
+                        string name = fields[0];
+                        double price = double.Parse(fields[1], CultureInfo.InvariantCulture);
+                        int quantity = int.Parse(fields[2]);
+                        Produto01 p = new Produto01(name, price, quantity);
+                        streamWriter.WriteLine(p);
+                    }
+                }
+            }
+            catch (IOException e)
+            {
+                System.Console.WriteLine("ERROR OCCURED");
+                System.Console.WriteLine(e.Message);
+            }
+        }
+
+        static void ExecutarContratoParcela()
+        {
+            System.Console.Write("Number:");
+            int numberContract = int.Parse(System.Console.ReadLine());
+            System.Console.Write("Date:");
+            DateTime date = DateTime.Parse(System.Console.ReadLine());
+            System.Console.Write("Contract Value:");
+            double value = double.Parse(System.Console.ReadLine());
+            System.Console.Write("Enter number of installments:");
+            int numberParcela = int.Parse(System.Console.ReadLine());
+
+            Contract contract = new Contract(numberContract, date, value);
+            ContractService contractService = new ContractService(new PaypalService());
+            contractService.ProcessContract(contract, numberParcela);
+
+            System.Console.WriteLine("Installments:");
+            foreach (Installment installment in contract.Installments)
+            {
+                System.Console.WriteLine(installment);
+            }
+
+        }
+
+        static void ExecutarHashSet()
+        {
+            HashSet<int> courseA = new HashSet<int>();
+            HashSet<int> courseB = new HashSet<int>();
+            HashSet<int> courseC = new HashSet<int>();
+
+            System.Console.Write("How many students for course A?");
+            int numberStudents = int.Parse(System.Console.ReadLine());
+            Add(courseA, numberStudents);
+
+            System.Console.Write("How many students for course B?");
+            numberStudents = int.Parse(System.Console.ReadLine());
+            Add(courseB, numberStudents);
+
+            System.Console.Write("How many students for course A?");
+            numberStudents = int.Parse(System.Console.ReadLine());
+            Add(courseC, numberStudents);
+
+            //Juntando todos os HashSet
+            HashSet<int> allCourses = new HashSet<int>(courseA);
+            allCourses.UnionWith(courseB);
+            allCourses.UnionWith(courseC);
+
+            //Contando o número de registro
+            System.Console.WriteLine($"Total students {allCourses.Count}");
+        }
+        static void Add(HashSet<int> hashSet, int numberStudents)
+        {
+            for (int student = 0; student < numberStudents; student++)
+            {
+                int idStudents = int.Parse(System.Console.ReadLine());
+                hashSet.Add(idStudents);
+            }
+        }
+
+        static void ExecutarVotos()
+        {
+            System.Console.Write("Enter path:");
+            string path = System.Console.ReadLine();
+
+            try
+            {
+                Dictionary<string, int> candidatos = new Dictionary<string, int>();
+                using (StreamReader sr = File.OpenText(path))
+                {
+                    while (!sr.EndOfStream)
+                    {
+
+                        string[] votingRecord = sr.ReadLine().Split(',');
+                        string candidate = votingRecord[0];
+                        int votes = int.Parse(votingRecord[1]);
+
+                        if (candidatos.ContainsKey(candidate))
+                        {
+                            candidatos[candidate] += votes;
+                        }
+                        else
+                        {
+                            candidatos[candidate] = votes;
+                        }
+                    }
+
+                    foreach (var item in candidatos)
+                    {
+                        System.Console.WriteLine($"{ item.Key} :  {item.Value}");
+                    }
+                }
+
+            }
+            catch (IOException e)
+            {
+                System.Console.WriteLine($"An error occurred{e.Message}");
+            }
+
+
+        }
+
+        static void ExecutarArquvoFuncionario()
+        {
+            System.Console.Write("Enter path:");
+            string path = System.Console.ReadLine();
+
+            System.Console.Write("Enter salary:");
+            double salarySerch = double.Parse(System.Console.ReadLine());
+
+            List<FuncionarioD> list = new List<FuncionarioD>();
+            try
+            {
+                using (StreamReader sr = File.OpenText(path))
+                {
+                    while (!sr.EndOfStream)
+                    {
+                        string[] funcionarios = sr.ReadLine().Split(',');
+                        string name = funcionarios[0];
+                        double salary = double.Parse(funcionarios[1], CultureInfo.InvariantCulture);
+                        string email = funcionarios[3];
+                        list.Add(new FuncionarioD(salary, name, email));
+
+                        var serchResulEmail = list.Where(funcionario => funcionario.Salary > salarySerch).OrderBy(funcionarios => funcionarios.Email).Select(funcionarios => funcionarios.Email);
+                        var salarySum = list.Where(f => f.Name[0] == 'M').Sum(f => f.Salary);
+
+                        System.Console.WriteLine($"Email of employee whose salary is more than {salarySerch.ToString("F2", CultureInfo.InvariantCulture)}");
+                        foreach (string eamil in serchResulEmail)
+                        {
+                            System.Console.WriteLine(email);
+                        }
+                        System.Console.WriteLine($"Sum salary people whose name star with M{salarySum}");
+
+
+                    }
+                }
+            }
+            catch (IOException e)
+            {
+                System.Console.WriteLine($"An error occurred{e.Message}");
+            }
+
+        }
+
 
     }
 }
